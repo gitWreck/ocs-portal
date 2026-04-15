@@ -22,8 +22,8 @@
                 <div>
                   <h2 class="fw-bold mb-1">Remaining Subjects Portal</h2>
                   <p class="text-muted mb-0">
-                    Review the subjects you still need to complete and indicate
-                    when you plan to take them.
+                    Review your remaining subjects and indicate your planned
+                    term.
                   </p>
                 </div>
                 <button
@@ -69,46 +69,157 @@
                   </div>
                 </div>
 
-                <div
-                  class="d-flex justify-content-between align-items-center mb-2"
-                >
-                  <div>
-                    <h5 class="fw-semibold mb-0">Subjects Not Yet Passed</h5>
-                    <small class="text-muted">
-                      Passing grades include 1.00 to 3.00, S, and P. If a valid
-                      R grade exists, it is used first.
-                    </small>
+                <div class="mb-5">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <div>
+                      <h5 class="fw-semibold mb-0">Remaining Subjects</h5>
+                      <small class="text-muted">
+                        Currently enrolled subjects are placed on top and their
+                        planned term is disabled.
+                      </small>
+                    </div>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table
+                      class="table table-bordered align-middle"
+                      id="subjects-table"
+                    >
+                      <thead class="table-dark">
+                        <tr>
+                          <th style="width: 13%">Subject Code</th>
+                          <th>Subject Description</th>
+                          <th style="width: 14%">Status</th>
+                          <th style="width: 18%">Planned Term</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="4" class="text-center text-muted">
+                            No subjects found.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
 
-                <div class="table-responsive">
-                  <table
-                    class="table table-bordered align-middle"
-                    id="subjects-table"
+                <div class="mb-4" id="ge-section">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
                   >
-                    <thead class="table-dark">
-                      <tr>
-                        <th style="width: 13%">Subject Code</th>
-                        <th>Subject Description</th>
-                        <th style="width: 12%">Grade</th>
-                        <th style="width: 12%">R Grade</th>
-                        <th style="width: 12%">Enrolled</th>
-                        <th style="width: 18%">Planned Term</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td colspan="6" class="text-center text-muted">
-                          No subjects found.
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                    <div>
+                      <h5 class="fw-semibold mb-0">GE Completion</h5>
+                      <small class="text-muted">
+                        Required GE and elective GE status. Students should have
+                        at least 3 elective GEs.
+                      </small>
+                    </div>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table
+                      class="table table-bordered align-middle"
+                      id="ge-table"
+                    >
+                      <thead class="table-dark">
+                        <tr>
+                          <th style="width: 14%">GE Type</th>
+                          <th style="width: 18%">Requirement</th>
+                          <th>Subject</th>
+                          <th style="width: 14%">Status</th>
+                          <th style="width: 18%">Semester</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="5" class="text-center text-muted">
+                            No GE records found.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="mb-4" id="spcl-section">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <div>
+                      <h5 class="fw-semibold mb-0">Specialization</h5>
+                      <small class="text-muted">
+                        <!-- Required GE and elective GE status. Students should have
+                        at least 3 elective GEs. -->
+                      </small>
+                    </div>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table
+                      class="table table-bordered align-middle"
+                      id="spcl-table"
+                    >
+                      <thead class="table-dark">
+                        <tr>
+                          <th style="width: 20%">SPCL Subject</th>
+                          <th>Subject Description</th>
+                          <th style="width: 14%">Status</th>
+                          <th style="width: 18%">Semester</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="4" class="text-center text-muted">
+                            No SPCL records found.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <div>
+                      <h5 class="fw-semibold mb-0">HK / NSTP Completion</h5>
+                      <small class="text-muted">
+                        Required: 1 HK 11, 3 HK 12, 1 NSTP 1, and 1 NSTP 2.
+                      </small>
+                    </div>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table
+                      class="table table-bordered align-middle"
+                      id="hk-nstp-table"
+                    >
+                      <thead class="table-dark">
+                        <tr>
+                          <th style="width: 14%">Requirement</th>
+                          <th>Current Record / HK Type</th>
+                          <th style="width: 14%">Status</th>
+                          <th style="width: 18%">Semester</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colspan="4" class="text-center text-muted">
+                            No HK/NSTP records found.
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 <div class="d-flex justify-content-end mt-3">
                   <button type="button" id="save-plan-btn" class="btn btn-dark">
-                    Save Planned Termss
+                    Save Planned Terms
                   </button>
                 </div>
               </div>
