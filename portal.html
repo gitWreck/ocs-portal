@@ -43,8 +43,8 @@
               <div id="portal-section" class="d-none">
                 <div class="mb-4">
                   <h5 class="fw-semibold mb-3">Student Information</h5>
-                  <div class="row g-3">
-                    <div class="col-md-4">
+                  <div class="">
+                    <div class="col-md-6">
                       <label class="form-label small text-muted mb-1"
                         >Email</label
                       >
@@ -52,7 +52,7 @@
                         -
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                       <label class="form-label small text-muted mb-1"
                         >Name</label
                       >
@@ -60,7 +60,7 @@
                         -
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                       <label class="form-label small text-muted mb-1"
                         >Student Number</label
                       >
@@ -151,8 +151,8 @@
                     <div>
                       <h5 class="fw-semibold mb-0">Specialization</h5>
                       <small class="text-muted">
-                        <!-- Required GE and elective GE status. Students should have
-                        at least 3 elective GEs. -->
+                        Please ensure that these subjects align with your chosen
+                        stream or your future chosen stream.
                       </small>
                     </div>
                   </div>
@@ -217,9 +217,25 @@
                   </div>
                 </div>
 
+                <div class="mb-4 mt-5">
+                  <label for="student-concerns" class="form-label fw-semibold"
+                    >Other Concerns</label
+                  >
+                  <p class="small text-muted mb-2">
+                    If you have other concerns related to this listed courses,
+                    kindly state it here.
+                  </p>
+                  <textarea
+                    class="form-control bg-white"
+                    id="student-concerns"
+                    rows="3"
+                    placeholder="Type your concerns here..."
+                  ></textarea>
+                </div>
+
                 <div class="d-flex justify-content-end mt-3">
                   <button type="button" id="save-plan-btn" class="btn btn-dark">
-                    Save Planned Terms
+                    Save Planned of Study
                   </button>
                 </div>
               </div>
@@ -257,8 +273,58 @@
       </div>
     </div>
 
+    <div
+      class="modal fade"
+      id="confirmSaveModal"
+      tabindex="-1"
+      aria-labelledby="confirmSaveModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-dark border-0">
+            <h5
+              class="modal-title fw-bold text-light"
+              id="confirmSaveModalLabel"
+            >
+              Confirm Submission
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Are you sure you want to submit your planned terms and concerns?
+              Please review your entries carefully.
+            </p>
+            <p class="mb-0 fw-semibold text-danger">
+              Note: You will not be able to edit your responses after
+              submission.
+            </p>
+          </div>
+          <div class="modal-footer border-0">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-dark" id="confirm-save-btn">
+              Yes, Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

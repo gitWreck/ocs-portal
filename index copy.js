@@ -4,8 +4,6 @@ let currentSubjects = [];
 let currentPassedHkNstp = [];
 let currentPassedGe = [];
 let currentPassedSpcl = [];
-let spclSubjectsData = []; // Variable to hold the fetched JSON data
-let hkTypes = [];
 
 /**
  * SUPABASE CONFIG
@@ -17,19 +15,110 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const PLANNED_TERM_OPTIONS = {
   "": { year: "" },
+
   1253: { year: "Mid 2026" },
   1261: { year: "1st 2026-2027" },
   1262: { year: "2nd 2026-2027" },
+
   1263: { year: "Mid 2027" },
   1271: { year: "1st 2027-2028" },
   1272: { year: "2nd 2027-2028" },
+
   1273: { year: "Mid 2028" },
   1281: { year: "1st 2028-2029" },
   1282: { year: "2nd 2028-2029" },
+
   1283: { year: "Mid 2029" },
   1291: { year: "1st 2029-2030" },
   1292: { year: "2nd 2029-2030" },
 };
+
+const HK_TYPE_OPTIONS = [
+  "",
+  "Aerobic Dancing",
+  "Aikido",
+  "Arnis",
+  "Asian Dance",
+  "Archery",
+  "Ballet for Beginners",
+  "Basketball",
+  // "Basketball Female",
+  // "Basketball Male",
+  "Billiards",
+  "Belly Dancing",
+  "Baseball",
+  "Badminton",
+  "Beach Volleyball",
+  // "Beach Volleyball (COED)",
+  "Contract Bridge Game",
+  "Contemporary Dance",
+  "Chess",
+  "Cheer Dance",
+  "Cardio Kung Fu",
+  "Duckpin Bowling",
+  "DanceSport",
+  "Darts",
+  "Football/Soccer",
+  // "Football (COED)",
+  // "Football/Soccer for female",
+  // "Football/Soccer for male",
+  "Female Handball",
+  "Futsal",
+  // "Futsal (Indoor Football)",
+  // "Futsal for female",
+  // "Futsal for male",
+  "Hawaii",
+  "Hoof Dance",
+  "Hooping Fitness",
+  "Hula/Tahitian",
+  "Judo",
+  "Karatedo",
+  "Line Dance",
+  "Lawn Tennis",
+  "Laughter Yoga",
+  "Modern Dance",
+  "Male Handball",
+  "Modern Jazz",
+  "Muslim Dance",
+  "Neo-Filipino",
+  "Outdoor Recreation",
+  "Pickle Ball",
+  "Philippine Folk Dance",
+  "Philippine Game",
+  "Pilates",
+  "Polynesian Dance",
+  "Running for Fitness",
+  "Roper Flow",
+  "Social Dance",
+  "Self-Defense",
+  "Softball",
+  // "Softball Female",
+  // "Softball Male",
+  "Shakti",
+  "Street Jazz",
+  "Slo-Pitch Softball",
+  "Sepak takraw",
+  "Stretching",
+  "Swimming",
+  // "Swimming (COED)",
+  // "Swimming Female",
+  // "Swimming Male",
+  "Tai-chi-chuan",
+  "Tap Dance",
+  "Track & Field",
+  "Taekwondo",
+  "Table Tennis",
+  "Ultimate Frisbee",
+  "Volleyball",
+  // "Volleyball Female",
+  // "Volleyball Male",
+  "Woodball",
+  "Walking for Fitness",
+  "Weight Training",
+  // "Weight Training (COED)",
+  "Yoga",
+  "Zumba",
+];
 
 const HK_NSTP_REQUIREMENTS = [
   { code: "HK 11", required: 1, needsType: false },
@@ -71,32 +160,7 @@ const REQUIRED_GE_CODES = [
   "PI 10",
 ];
 
-// Fetch SPCL subjects from external JSON file
-async function loadSpclCourses() {
-  try {
-    const response = await fetch("spcl.json");
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    spclSubjectsData = await response.json();
-  } catch (error) {
-    console.error("Failed to load spcl.json:", error);
-    spclSubjectsData = [];
-  }
-}
-
-async function loadHKActivities() {
-  try {
-    const response = await fetch("hk.json");
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    hkTypes = await response.json();
-  } catch (error) {
-    console.error("Failed to load hk.json:", error);
-    hkTypes = [];
-  }
-}
+const SPCL_SUBJECTS = ["SPCM 1", "SPCM 2", "SPCM 3", "SPCM 4"];
 
 function normalizeDegree(value) {
   return String(value || "")
@@ -129,31 +193,20 @@ async function getPassedSpclByStudentNo(studentNo) {
   return data || [];
 }
 
-function buildSpclOptions() {
-  return spclSubjectsData
-    .map((course) => {
-      const subjNo = course["Subject No"];
-      const desc = course["Description"] || "";
-      // Value goes into input, text between tags shows as a hint in dropdown
-      return `<option value="${escapeHtml(subjNo)}">${
-        (escapeHtml(subjNo), ". ", escapeHtml(desc))
-      }</option>`;
-    })
-    .join("");
+function buildSpclOptions(selectedValue) {
+  return SPCL_SUBJECTS.map((code) => {
+    const selected =
+      String(code) === String(selectedValue || "") ? "selected" : "";
+
+    return `<option value="${escapeHtml(code)}" ${selected}>${escapeHtml(
+      code
+    )}</option>`;
+  }).join("");
 }
 
 function renderSpclTable(records) {
   const $tbody = $("#spcl-table tbody");
   $tbody.empty();
-
-  // Create the datalist once on the body if it doesn't exist
-  if ($("#spcl-course-list").length === 0) {
-    $("body").append(`
-      <datalist id="spcl-course-list">
-        ${buildSpclOptions()}
-      </datalist>
-    `);
-  }
 
   let hasRows = false;
 
@@ -176,9 +229,12 @@ function renderSpclTable(records) {
     $tbody.append(`
       <tr class="table-light spcl-missing-row">
         <td>
-          <input type="text" list="spcl-course-list" class="form-control form-control-sm spcl-subject-input" placeholder="Type or select SPCL" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}">
+          <select class="form-select form-select-sm spcl-subject-input">
+            <option value="">Select SPCL</option>
+            ${buildSpclOptions("")}
+          </select>
         </td>
-        <td class="spcl-description-cell"><span class="text-muted">To be completed</span></td>
+        <td><span class="text-muted">To be completed</span></td>
         <td>Remaining</td>
         <td>
           <select class="form-select form-select-sm spcl-semester-input">
@@ -261,13 +317,16 @@ function buildPlannedTermOptions(selectedValue) {
     .join("");
 }
 
-function buildHkTypeOptions() {
-  return hkTypes
-    .filter((option) => option !== "") // Remove the empty default option
-    .map((option) => {
-      return `<option value="${escapeHtml(option)}"></option>`;
-    })
-    .join("");
+function buildHkTypeOptions(selectedValue) {
+  return HK_TYPE_OPTIONS.map((option) => {
+    const selected =
+      String(option) === String(selectedValue || "") ? "selected" : "";
+    const label = option === "" ? "Select HK" : option;
+
+    return `<option value="${escapeHtml(option)}" ${selected}>${escapeHtml(
+      label
+    )}</option>`;
+  }).join("");
 }
 
 function normalizeRequirementCode(value) {
@@ -293,6 +352,7 @@ function getDisplaySemester(record) {
     const year = Number(record.enrolled_year);
     const termRaw = String(record.term).toUpperCase().trim();
 
+    // handle trimester (1T, 2T, 3T)
     if (termRaw === "1T") {
       return `1st Tri ${year}-${year + 1}`;
     }
@@ -305,6 +365,7 @@ function getDisplaySemester(record) {
       return `3rd Tri ${year}-${year + 1}`;
     }
 
+    // handle regular terms
     if (termRaw === "S" || termRaw === "M") {
       return `${year} Midyear`;
     }
@@ -424,27 +485,20 @@ function renderSubjects(subjects) {
   });
 
   sortedSubjects.forEach((subject) => {
-    // Check if it's already enrolled OR already has a planned term saved
-    const hasExistingData =
-      subject.planned_term && subject.planned_term.trim() !== "";
-    const isLocked = subject.currently_enrolled || hasExistingData;
-
-    let statusHtml = "Remaining";
-    if (subject.currently_enrolled) {
-      statusHtml =
-        '<span class="badge text-bg-success">Currently Enrolled</span>';
-    } else if (hasExistingData) {
-      statusHtml = '<span class="badge text-bg-secondary">Term Locked</span>';
-    }
-
     $tbody.append(`
       <tr data-id="${subject.id}">
         <td>${escapeHtml(subject.subj_no)}</td>
         <td>${escapeHtml(subject.subj_desc)}</td>
-        <td>${statusHtml}</td>
+        <td>
+          ${
+            subject.currently_enrolled
+              ? '<span class="badge text-bg-success">Currently Enrolled</span>'
+              : "Remaining"
+          }
+        </td>
         <td>
           <select class="form-select form-select-sm planned-term" ${
-            isLocked ? "disabled" : ""
+            subject.currently_enrolled ? "disabled" : ""
           }>
             ${buildPlannedTermOptions(subject.planned_term)}
           </select>
@@ -458,14 +512,7 @@ function renderHkNstpTable(records) {
   const $tbody = $("#hk-nstp-table tbody");
   $tbody.empty();
 
-  // Create the datalist once on the body if it doesn't exist
-  if ($("#hk-course-list").length === 0) {
-    $("body").append(`
-      <datalist id="hk-course-list">
-        ${buildHkTypeOptions()}
-      </datalist>
-    `);
-  }
+  // console.log("records", records);
 
   function getRequirementMatch(subjNo) {
     const value = String(subjNo || "")
@@ -494,6 +541,7 @@ function renderHkNstpTable(records) {
     const missingCount = Math.max(req.required - existingRows.length, 0);
 
     existingRows.forEach((row) => {
+      // console.log("row", row);
       hasRows = true;
       $tbody.append(`
         <tr>
@@ -515,7 +563,9 @@ function renderHkNstpTable(records) {
           <td>
             ${
               req.needsType
-                ? `<input type="text" list="hk-course-list" class="form-control form-control-sm hk-type-input" placeholder="Type or select HK" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}">`
+                ? `<select class="form-select form-select-sm hk-type-input">
+                    ${buildHkTypeOptions("")}
+                  </select>`
                 : `<span class="text-muted">To be completed</span>`
             }
           </td>
@@ -527,6 +577,7 @@ function renderHkNstpTable(records) {
           </td>
           </tr>
           `);
+      // <td><span class="badge text-bg-warning">Missing</span></td>
     }
   });
 
@@ -741,180 +792,49 @@ async function savePlannedTerms() {
 
   const updates = [];
 
-  // 1a. Gather Remaining Subjects updates (Top Table - Updates existing IDs)
   $("#subjects-table tbody tr[data-id]").each(function () {
-    const $select = $(this).find(".planned-term");
-    if (!$select.prop("disabled") && $select.val()) {
+    const id = Number($(this).attr("data-id"));
+    const plannedTerm = $(this).find(".planned-term").val();
+
+    if (!Number.isNaN(id)) {
       updates.push(
         supabaseClient
+          // .from("student_subject_status")
           .from("subjects_status")
           .update({
-            planned_term: $select.val(),
+            planned_term: plannedTerm === "" ? null : plannedTerm,
           })
-          .eq("id", Number($(this).attr("data-id")))
+          .eq("id", id)
       );
     }
   });
 
-  // 1b. Gather SPCL Updates (Inserts new planned records into subjects_status)
-  $(".spcl-missing-row").each(function () {
-    const subject = $(this).find(".spcl-subject-input").val();
-    const term = $(this).find(".spcl-semester-input").val();
-
-    if (subject && term) {
-      updates.push(
-        supabaseClient.from("subjects_status").insert({
-          stu_no: currentStudent.student_no,
-          subj_no: subject,
-          planned_term: term,
-          category: "SPCL", // Tag it as SPCL so v_remaining_subjects ignores it
-          source_type: "CURRICULUM", // Required by your database constraint
-        })
-      );
-    }
-  });
-
-  // 1c. Gather GE Updates (Inserts new planned records into subjects_status)
-  $(".ge-missing-row").each(function () {
-    const type = $(this).data("ge-type");
-    const subject =
-      type === "required"
-        ? $(this).data("requirement")
-        : $(this).find(".ge-elective-input").val();
-    const term = $(this).find(".ge-semester-input").val();
-
-    if (subject && term) {
-      updates.push(
-        supabaseClient.from("subjects_status").insert({
-          stu_no: currentStudent.student_no,
-          subj_no: subject,
-          planned_term: term,
-          category_label: type === "elective" ? "GE Elective" : null, // Tag electives
-          source_type: "CURRICULUM",
-        })
-      );
-    }
-  });
-
-  // 1d. Gather HK/NSTP Updates (Inserts new planned records into subjects_status)
-  $(".hk-nstp-missing-row").each(function () {
-    const requirement = $(this).data("requirement"); // e.g., 'HK 12'
-    const needsType = $(this).data("needs-type") == "1";
-    const hkType = needsType ? $(this).find(".hk-type-input").val() : null; // e.g., 'Basketball'
-    const term = $(this).find(".hk-semester-input").val();
-
-    // Require 'term'. If 'needsType' is true, also require 'hkType'
-    if (term && (!needsType || (needsType && hkType))) {
-      updates.push(
-        supabaseClient.from("subjects_status").insert({
-          stu_no: currentStudent.student_no,
-          subj_no: requirement,
-          subj_desc: hkType, // Store the specific sport/activity in the description column
-          planned_term: term,
-          source_type: "CURRICULUM",
-        })
-      );
-    }
-  });
-
-  // 2. Gather student concerns (safely handling optional input)
-  const $concernsInput = $("#student-concerns");
-  const studentConcerns = $concernsInput.length
-    ? ($concernsInput.val() || "").trim()
-    : "";
-
-  if (studentConcerns !== "") {
-    updates.push(
-      supabaseClient.from("portal_concerns").insert({
-        student_no: currentStudent.student_no,
-        email: currentStudent.email,
-        concern_text: studentConcerns,
-      })
-    );
-  }
-
-  console.log("Total items ready to save:", updates.length);
-
-  if (updates.length === 0) {
-    // Hide modal if nothing to save so they can see the warning on the main page
-    const modalEl = document.getElementById("confirmSaveModal");
-    if (modalEl) bootstrap.Modal.getInstance(modalEl).hide();
-
-    showPortalMessage(
-      "warning",
-      "Please select at least one planned term or enter a concern before saving."
-    );
+  if (!updates.length) {
+    showPortalMessage("warning", "No subjects available to update.");
     return;
   }
 
-  // --- NEW: MODAL "SAVING" STATE ---
-  const $modalBody = $("#confirmSaveModal .modal-body");
-  const $modalFooter = $("#confirmSaveModal .modal-footer");
-
-  // Hide the footer buttons so the user can't click anything else
-  $modalFooter.hide();
-
-  // Show a saving spinner inside the modal
-  $modalBody.html(`
-    <div class="text-center py-4">
-      <div class="spinner-border text-dark mb-3" role="status"></div>
-      <h5 class="fw-semibold">Saving your responses...</h5>
-      <p class="text-muted small">Please do not close this window.</p>
-    </div>
-  `);
+  $("#save-plan-btn").prop("disabled", true).text("Saving...");
 
   try {
     const results = await Promise.all(updates);
     const failed = results.find((result) => result.error);
 
     if (failed) {
-      throw failed.error; // Send to catch block
+      console.error("Save error:", failed.error);
+      showPortalMessage("danger", "Failed to save some planned terms.");
+      return;
     }
 
-    // --- SUCCESS & MODAL COUNTDOWN LOGIC ---
-    let secondsLeft = 5;
-    $modalBody.html(`
-      <div class="text-center py-4">
-        <h4 class="text-success fw-bold mb-3">Saved Successfully!</h4>
-        <p class="mb-1">Your responses have been locked.</p>
-        <p class="text-muted small">You will be logged out in <span id="logout-timer" class="fw-bold fs-5">${secondsLeft}</span> seconds...</p>
-      </div>
-    `);
-
-    // Clear the concerns box safely in the background
-    const $concernsInput = $("#student-concerns");
-    if ($concernsInput.length) {
-      $concernsInput.val("");
-    }
-
-    // Start countdown
-    const timerInterval = setInterval(() => {
-      secondsLeft--;
-      $("#logout-timer").text(secondsLeft);
-      if (secondsLeft <= 0) {
-        clearInterval(timerInterval);
-
-        // Hide modal backdrop properly before redirecting
-        const modalEl = document.getElementById("confirmSaveModal");
-        if (modalEl) bootstrap.Modal.getInstance(modalEl).hide();
-
-        logoutUser();
-      }
-    }, 1000);
+    showPortalMessage(
+      "success",
+      "Planned terms saved successfully. HK/NSTP missing rows are currently for display/input only."
+    );
   } catch (error) {
-    console.error("Save JS error:", error);
-
-    // Revert modal to error state and show footer again so they can close it
-    $modalBody.html(`
-      <div class="py-4 text-center">
-        <h5 class="fw-bold text-danger">Error Saving Data</h5>
-        <p class="mb-0">Something went wrong. Please check your connection and try again.</p>
-      </div>
-    `);
-    $modalFooter.show();
-    $("#confirm-save-btn").text("Try Again");
-
-    showPortalMessage("danger", "Failed to save your data.");
+    console.error("Save planned terms error:", error);
+    showPortalMessage("danger", "Failed to save planned terms.");
+  } finally {
+    $("#save-plan-btn").prop("disabled", false).text("Save Planned Terms");
   }
 }
 
@@ -929,11 +849,7 @@ function logoutUser() {
   currentPassedSpcl = [];
 }
 
-$(document).ready(async function () {
-  // Load SPCL JSON before initializing portal
-  await loadSpclCourses();
-  await loadHKActivities();
-
+$(document).ready(function () {
   const path = window.location.pathname.toLowerCase();
 
   if (path.includes("portal.html")) {
@@ -951,23 +867,8 @@ $(document).ready(async function () {
       logoutUser();
     });
 
-    // Change this to open the modal instead of saving directly
     $("#save-plan-btn").on("click", function () {
-      const confirmModal = new bootstrap.Modal(
-        document.getElementById("confirmSaveModal")
-      );
-      confirmModal.show();
-    });
-
-    // Add this to do the actual saving when "Yes, Submit" is clicked
-    $("#confirm-save-btn").on("click", async function () {
-      // Hide the modal
-      // const modalEl = document.getElementById("confirmSaveModal");
-      // const modalInstance = bootstrap.Modal.getInstance(modalEl);
-      // modalInstance.hide();
-
-      // Run the save function
-      await savePlannedTerms();
+      savePlannedTerms();
     });
   }
 
@@ -978,24 +879,4 @@ $(document).ready(async function () {
       window.location.href = "portal.html";
     }
   }
-
-  // Auto-fill SPCL Description when a subject is selected
-  $(document).on("input", ".spcl-subject-input", function () {
-    const selectedSubjNo = $(this).val().trim();
-    const $row = $(this).closest("tr");
-    const $descCell = $row.find(".spcl-description-cell");
-
-    // Find the matching subject from the JSON data we loaded earlier
-    const matchedSubject = spclSubjectsData.find(
-      (course) => course["Subject No"] === selectedSubjNo
-    );
-
-    if (matchedSubject && matchedSubject["Description"]) {
-      // Show the actual description
-      $descCell.text(matchedSubject["Description"]);
-    } else {
-      // Revert to default if input is cleared or invalid
-      $descCell.html('<span class="text-muted">To be completed</span>');
-    }
-  });
 });
