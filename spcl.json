@@ -1,506 +1,926 @@
 [
   {
     "Subject No": "FBS 41",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Pathology",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 42",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Products Pathology",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 146",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Microbiology",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 151",
-    "Former name": null,
+    "Former name": "",
     "Description": "Microtechnique of Woody Plants",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 161",
-    "Former name": null,
+    "Former name": "",
     "Description": "Plant Anatomy",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 167",
-    "Former name": null,
+    "Former name": "",
     "Description": "Plant Taxonomy",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 190",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Problems",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 191",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Topics",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 111",
-    "Former name": null,
+    "Former name": "",
     "Description": "Wood and Fiber Anatomy",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 121",
-    "Former name": null,
+    "Former name": "",
     "Description": "Wood Physics",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 131",
-    "Former name": null,
+    "Former name": "",
     "Description": "Wood Chemistry",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 132",
-    "Former name": null,
+    "Former name": "",
     "Description": "Pulp and Paper Technology",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 132.1",
-    "Former name": null,
+    "Former name": "",
     "Description": "Pulp and Paper Laboratory",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 2,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 134",
-    "Former name": null,
+    "Former name": "",
     "Description": "Wood Finishing",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 136",
-    "Former name": null,
+    "Former name": "",
     "Description": "Chemical Properties and Processing of Forest Products",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 141",
-    "Former name": null,
+    "Former name": "",
     "Description": "Lumber Manufacture and Grading",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 151",
-    "Former name": null,
+    "Former name": "",
     "Description": "Seasoning of Wood and Related Products",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 161",
-    "Former name": null,
+    "Former name": "",
     "Description": "Preservation of Wood and Related Products",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 171",
-    "Former name": null,
+    "Former name": "",
     "Description": "Adhesives and Gluing",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 172",
-    "Former name": null,
+    "Former name": "",
     "Description": "Glued Wood Products Technology",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 181",
-    "Former name": null,
+    "Former name": "",
     "Description": "Quality Control",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 182",
-    "Former name": null,
+    "Former name": "",
     "Description": "Production Planning and Control",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 190",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Problems",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 191",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Topic: Renewable Energy from Forest Products",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 191",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Topic: Introduction to Conservation of Timber Heritage",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
-    "Subject No": "FRM 119 / FPPS 119",
-    "Former name": null,
+    "Subject No": "FRM 119",
+    "Former name": "formerly FPPS 119",
     "Description": "Marketing of Forest Products",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 121",
     "Former name": "formerly 116",
     "Description": "Accounting",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 122",
     "Former name": "formerly 118",
     "Description": "Forest Finance",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 143",
     "Former name": "formerly 164",
     "Description": "Sampling Methods in Forestry",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 144",
     "Former name": "formerly 167",
     "Description": "Experimental Designs in Forestry Research",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 146",
     "Former name": "formerly 194",
     "Description": "Production Planning and Control in Logging Operations",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 141",
     "Former name": "formerly FRM 103",
     "Description": "Introduction to Remote Sensing",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 142",
     "Former name": "formerly FRM 161",
     "Description": "Aerial Photogrammetry and Image Interpretation",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 150",
     "Former name": "formerly FPPS 152 or SFFG 151",
     "Description": "Forest--based Rural Industries",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 105",
     "Former name": "formerly 171",
     "Description": "Silvics",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 144",
     "Former name": "formerly 124",
     "Description": "Silviculture of Non-Timber Producing Plant Species",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 146",
     "Former name": "formerly 141",
     "Description": "Forest Tree Improvement",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 152",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Tree Seeds",
-    "Stream": "Production & Industrial Forestry"
+    "Stream": "Production & Industrial Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 126",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Entomology",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 130",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Tree Physiology",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 136",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Ecology",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 140",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Mycology",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 181",
-    "Former name": null,
+    "Former name": "",
     "Description": "Research Techniques in Forest Biology",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 190",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Problems",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FBS 191",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Topics",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "WLDL 105",
-    "Former name": null,
+    "Former name": "",
     "Description": "Principles of Wildlife Management",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "WLDL 195",
-    "Former name": null,
+    "Former name": "",
     "Description": "Techniques of Wildlife Management",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FPPS 140",
-    "Former name": null,
+    "Former name": "",
     "Description": "Environmental Pollution in Forest Industries",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFPPS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 102",
     "Former name": "formerly 110",
     "Description": "Fundamentals of Envt'l Forest Mgt",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 145",
-    "Former name": null,
+    "Former name": "",
     "Description": "Tropical Forests and Climate Change",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 170",
     "Former name": "formerly 130",
     "Description": "Forest Range Management",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 190",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Problems",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "FRM 191",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Topics",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 130",
-    "Former name": null,
+    "Former name": "",
     "Description": "Nature-based Leisure and Outdoor Recreation",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 131",
-    "Former name": null,
+    "Former name": "",
     "Description": "Fundamentals of Ecotourism",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 132",
-    "Former name": null,
+    "Former name": "",
     "Description": "Conservation and Management of Protected Areas",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 133",
     "Former name": "formerly 185 / FBS 185",
     "Description": "Nature Interpretation",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 143",
     "Former name": "formerly SFI 168",
     "Description": "Environmental Impact Assessment of Nat Resources Mgmt Projects",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 160",
-    "Former name": null,
+    "Former name": "",
     "Description": "Introduction to Models in Ecosystem and Natural Resources Management",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 101",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Soils",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 102",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Soil and Water Conservation",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 106",
     "Former name": "formerly 161",
     "Description": "Introduction to Forest Influences",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 107",
     "Former name": "formerly 126",
     "Description": "Fundamentals of Urban Forestry",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 145",
     "Former name": "formerly 131",
     "Description": "Silvicultural Approaches to Forest Protection",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 148",
     "Former name": "formerly 182",
     "Description": "Forestation Techniques for Marginal and Degraded Areas",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 149",
     "Former name": "formerly 122",
     "Description": "Arboriculture and Landscape Gardening",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 150",
-    "Former name": null,
+    "Former name": "",
     "Description": "Silviculture of Mangrove Forests",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 172",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest Fire Management",
-    "Stream": "Environmental Forestry"
+    "Stream": "Environmental Forestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "NRC 150",
-    "Former name": null,
+    "Former name": "",
     "Description": "Forest-based Rural Industries",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDFBS",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 111",
-    "Former name": null,
+    "Former name": "",
     "Description": "Approaches to Forest Conservation",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 112",
-    "Former name": null,
+    "Former name": "",
     "Description": " Program Planning",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 120",
-    "Former name": null,
+    "Former name": "",
     "Description": "Environmental and Natural Resource Worldviews",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 133",
-    "Former name": null,
+    "Former name": "",
     "Description": "Socio-Economics of Agroforestry",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 141",
-    "Former name": null,
+    "Former name": "",
     "Description": "Formal Organizations in Social Forestry",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 149",
-    "Former name": null,
+    "Former name": "",
     "Description": "Gender Analysis and Planning",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 150",
-    "Former name": null,
+    "Former name": "",
     "Description": "Production and Conservation Technologies in Social Forestry",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 155",
-    "Former name": null,
+    "Former name": "",
     "Description": "Social Equity Issues in Social Forestry",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 163",
-    "Former name": null,
+    "Former name": "",
     "Description": "Anthropological Concepts for Social Forestry",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 182",
-    "Former name": null,
+    "Former name": "",
     "Description": "Rural Institutions for Forestry & Natural Resource Development",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 190",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Problems",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 191",
-    "Former name": null,
+    "Former name": "",
     "Description": "Special Topics",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFFG 197",
-    "Former name": null,
+    "Former name": "",
     "Description": "Anthropological Research Methods in Forestry and other Natural Resources Development",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBDSFFG",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 104",
     "Former name": "formerly 133",
     "Description": "Agroforestry Systems of the Philippines",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   },
   {
     "Subject No": "SFI 147",
     "Former name": "formerly 143",
     "Description": "Agroforestry Systems Design and Development",
-    "Stream": "Social Forestry and Agroforestry"
+    "Stream": "Social Forestry and Agroforestry",
+    "Units": 3,
+    "category": "SPCL",
+    "category_label": "Specialized",
+    "acad_org": "LBIRNR",
+    "acad_group": "CFNR"
   }
 ]
