@@ -798,7 +798,9 @@ async function loadStudentPortal(email) {
     currentStudent = student;
 
     $("#student-email").text(student.email || "-");
-    $("#student-name").text(student.fullname || "-");
+    $("#student-name")
+      .text(student.fullname || "-")
+      .toUpperCase();
     $("#student-no").text(student.student_no || "-");
 
     const remainingSubjects = await getSubjectsByStudentNo(student.student_no);
@@ -1076,7 +1078,7 @@ $(document).ready(async function () {
     const storedUser = getStoredUser();
 
     if (!storedUser || !storedUser.email) {
-      window.location.href = "login.html";
+      window.location.href = "index.html";
       return;
     }
 
