@@ -1109,7 +1109,7 @@ $(document).ready(async function () {
     });
   }
 
-  if (path.includes("login.html") || path.endsWith("/")) {
+  if (path.includes("index.html") || path.endsWith("/")) {
     const storedUser = getStoredUser();
 
     if (storedUser && storedUser.email) {
