@@ -1061,7 +1061,7 @@ function logoutUser() {
   currentPassedHkNstp = [];
   currentPassedGe = [];
   sessionStorage.removeItem("student_portal_user");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
   currentPassedSpcl = [];
 }
 
