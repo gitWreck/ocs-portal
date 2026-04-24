@@ -106,8 +106,7 @@ function normalizeDegree(value) {
 }
 
 function shouldShowGeSection(degree) {
-  const normalized = normalizeDegree(degree);
-  return normalized !== "CIF";
+  return true; // Everyone sees GE, but rendering function hides electives for ASCF/CIF
 }
 
 function shouldShowSpclSection(degree) {
@@ -135,7 +134,6 @@ function buildSpclOptions() {
     .map((course) => {
       const subjNo = course["Subject No"];
       const desc = course["Description"] || "";
-      // FIXED: Used proper template interpolation instead of the comma operator
       return `<option value="${escapeHtml(subjNo)}">${escapeHtml(
         subjNo
       )} - ${escapeHtml(desc)}</option>`;
@@ -178,7 +176,7 @@ function renderSpclTable(records) {
           <input type="text" list="spcl-course-list" class="form-control form-control-sm spcl-subject-input" placeholder="Select Specialized" onclick="try{this.showPicker()}catch(e){}" onfocus="try{this.showPicker()}catch(e){}">
         </td>
         <td class="spcl-description-cell"><span class="text-muted">To be completed</span></td>
-        <td>Remaining</td>
+        <td><span class="badge text-bg-warning">Remaining</span></td>
         <td>
           <select class="form-select form-select-sm spcl-semester-input">
             ${buildPlannedTermOptions("")}
@@ -262,7 +260,6 @@ function buildHkTypeOptions() {
   return hkTypes
     .filter((option) => option !== "")
     .map((option) => {
-      // FIXED: Added inner text to the datalist option for better compatibility
       return `<option value="${escapeHtml(option)}">${escapeHtml(
         option
       )}</option>`;
@@ -333,6 +330,11 @@ function getGeStatusLabel(row) {
 }
 
 function getDisplaySemester(record) {
+  // NEW: Hide stale term data for currently enrolled records
+  if (record.currently_enrolled) {
+    return "-";
+  }
+
   if (record.planned_term && PLANNED_TERM_OPTIONS[record.planned_term]) {
     return PLANNED_TERM_OPTIONS[record.planned_term].year;
   }
@@ -536,7 +538,7 @@ function renderSubjects(subjects) {
       const isLocked = hasExistingData;
       const statusHtml = hasExistingData
         ? '<span class="badge text-bg-secondary">Saved</span>'
-        : "Remaining";
+        : '<span class="badge text-bg-warning">Remaining</span>';
 
       tableHtml += `
         <tr data-id="${subject.id}">
@@ -610,7 +612,6 @@ function renderHkNstpTable(records) {
       const ph = reqPlaceholders[i];
       hasRows = true;
 
-      // FIXED: Added optional chaining to ph?.id to prevent crash if ph is undefined
       $tbody.append(`
         <tr class="table-light hk-nstp-missing-row" 
             data-id="${ph?.id || ""}" 
@@ -624,7 +625,7 @@ function renderHkNstpTable(records) {
                 : `<span class="text-muted">To be completed</span>`
             }
           </td>
-          <td>Remaining</td>
+          <td><span class="badge text-bg-warning">Remaining</span></td>
           <td>
             <select class="form-select form-select-sm hk-semester-input">
               ${buildPlannedTermOptions("")}
@@ -642,11 +643,14 @@ function renderHkNstpTable(records) {
   }
 }
 
-function renderGeTable(records) {
+function renderGeTable(records, degree) {
   const $tbody = $("#ge-table tbody");
   $tbody.empty();
 
   let hasRows = false;
+
+  // Determine if electives should be shown based on the degree
+  const showElectives = degree !== "ASCF" && degree !== "CIF";
 
   function findBestRequiredGeRow(req) {
     const matches = records.filter(
@@ -663,6 +667,7 @@ function renderGeTable(records) {
     );
   }
 
+  // --- 1. RENDER REQUIRED GEs ---
   REQUIRED_GE_REQUIREMENTS.forEach((req) => {
     const row = findBestRequiredGeRow(req);
 
@@ -718,78 +723,83 @@ function renderGeTable(records) {
     `);
   });
 
-  const electiveRows = records.filter((row) =>
-    ELECTIVE_GE_SUBJECTS.includes(getGeRequirementMatch(row.subj_no))
-  );
-
-  electiveRows.forEach((row) => {
-    hasRows = true;
-
-    $tbody.append(`
-      <tr class="${
-        !row.currently_enrolled && !isPassingRecord(row) && !hasPlannedTerm(row)
-          ? "ge-missing-row table-light"
-          : ""
-      }"
-      data-ge-type="required"
-      data-id="${row.id || ""}"
-      data-subj="${escapeHtml(row.subj_no)}">
-        <td>Elective GE</td>
-        <td>${escapeHtml(
-          getGeRequirementMatch(row.subj_no) || row.subj_no
-        )}</td>
-        <td>${escapeHtml(row.subj_desc || row.subj_no)}</td>
-        <td>${getGeStatusLabel(row)}</td>
-        <td>
-          ${
-            row.currently_enrolled ||
-            isPassingRecord(row) ||
-            hasPlannedTerm(row)
-              ? escapeHtml(getDisplaySemester(row))
-              : `<select class="form-select form-select-sm ge-semester-input">
-                  ${buildPlannedTermOptions("")}
-                 </select>`
-          }
-        </td>
-      </tr>
-    `);
-  });
-
-  const missingElectives = Math.max(3 - electiveRows.length, 0);
-
-  for (let i = 0; i < missingElectives; i++) {
-    const electivePlaceholders = currentPlaceholders.filter(
-      (p) => p.subj_no === "GE" || p.category_label === "GE Elective"
+  // --- 2. RENDER ELECTIVE GEs ---
+  if (showElectives) {
+    const electiveRows = records.filter((row) =>
+      ELECTIVE_GE_SUBJECTS.includes(getGeRequirementMatch(row.subj_no))
     );
 
-    const ph = electivePlaceholders[i];
-    hasRows = true;
+    electiveRows.forEach((row) => {
+      hasRows = true;
 
-    $tbody.append(`
-      <tr class="table-light ge-missing-row"
-          data-ge-type="elective"
-          data-id="${ph?.id || ""}">
-        <td>Elective GE</td>
-        <td>
-          <select class="form-select form-select-sm ge-elective-input">
-            <option value="">Select elective GE</option>
-            ${ELECTIVE_GE_SUBJECTS.map(
-              (code) =>
-                `<option value="${escapeHtml(code)}">${escapeHtml(
-                  code
-                )}</option>`
-            ).join("")}
-          </select>
-        </td>
-        <td><span class="text-muted">To be completed</span></td>
-        <td><span class="badge text-bg-warning">Remaining</span></td>
-        <td>
-          <select class="form-select form-select-sm ge-semester-input">
-            ${buildPlannedTermOptions("")}
-          </select>
-        </td>
-      </tr>
-    `);
+      $tbody.append(`
+        <tr class="${
+          !row.currently_enrolled &&
+          !isPassingRecord(row) &&
+          !hasPlannedTerm(row)
+            ? "ge-missing-row table-light"
+            : ""
+        }"
+        data-ge-type="required"
+        data-id="${row.id || ""}"
+        data-subj="${escapeHtml(row.subj_no)}">
+          <td>Elective GE</td>
+          <td>${escapeHtml(
+            getGeRequirementMatch(row.subj_no) || row.subj_no
+          )}</td>
+          <td>${escapeHtml(row.subj_desc || row.subj_no)}</td>
+          <td>${getGeStatusLabel(row)}</td>
+          <td>
+            ${
+              row.currently_enrolled ||
+              isPassingRecord(row) ||
+              hasPlannedTerm(row)
+                ? escapeHtml(getDisplaySemester(row))
+                : `<select class="form-select form-select-sm ge-semester-input">
+                    ${buildPlannedTermOptions("")}
+                   </select>`
+            }
+          </td>
+        </tr>
+      `);
+    });
+
+    const missingElectives = Math.max(3 - electiveRows.length, 0);
+
+    for (let i = 0; i < missingElectives; i++) {
+      const electivePlaceholders = currentPlaceholders.filter(
+        (p) => p.subj_no === "GE" || p.category_label === "GE Elective"
+      );
+
+      const ph = electivePlaceholders[i];
+      hasRows = true;
+
+      $tbody.append(`
+        <tr class="table-light ge-missing-row"
+            data-ge-type="elective"
+            data-id="${ph?.id || ""}">
+          <td>Elective GE</td>
+          <td>
+            <select class="form-select form-select-sm ge-elective-input">
+              <option value="">Select elective GE</option>
+              ${ELECTIVE_GE_SUBJECTS.map(
+                (code) =>
+                  `<option value="${escapeHtml(code)}">${escapeHtml(
+                    code
+                  )}</option>`
+              ).join("")}
+            </select>
+          </td>
+          <td><span class="text-muted">To be completed</span></td>
+          <td><span class="badge text-bg-warning">Remaining</span></td>
+          <td>
+            <select class="form-select form-select-sm ge-semester-input">
+              ${buildPlannedTermOptions("")}
+            </select>
+          </td>
+        </tr>
+      `);
+    }
   }
 
   if (!hasRows) {
@@ -865,6 +875,7 @@ async function loadStudentPortal(email) {
     $("#student-name").text(student.fullname.toUpperCase() || "-");
     $("#student-no").text(student.student_no || "-");
 
+    // Fetches restored to normal (no filters!)
     const remainingSubjects = await getSubjectsByStudentNo(student.student_no);
     const passedHkNstp = await getPassedHkNstpByStudentNo(student.student_no);
 
@@ -890,7 +901,7 @@ async function loadStudentPortal(email) {
     renderHkNstpTable(passedHkNstp);
 
     if (shouldShowGeSection(studentDegree)) {
-      renderGeTable(passedGe);
+      renderGeTable(passedGe, studentDegree);
     }
 
     if (shouldShowSpclSection(studentDegree)) {
@@ -1097,7 +1108,7 @@ function logoutUser() {
   currentSubjects = [];
   currentPassedHkNstp = [];
   currentPassedGe = [];
-  currentPassedSpcl = []; // FIXED: Moved this above redirect
+  currentPassedSpcl = [];
   sessionStorage.removeItem("student_portal_user");
   window.location.href = "index.html";
 }
