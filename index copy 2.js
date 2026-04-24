@@ -5,7 +5,7 @@ let currentPassedHkNstp = [];
 let currentPassedGe = [];
 let currentPassedSpcl = [];
 let currentPlaceholders = [];
-let spclSubjectsData = [];
+let spclSubjectsData = []; // Variable to hold the fetched JSON data
 let hkTypes = [];
 
 /**
@@ -135,10 +135,10 @@ function buildSpclOptions() {
     .map((course) => {
       const subjNo = course["Subject No"];
       const desc = course["Description"] || "";
-      // FIXED: Used proper template interpolation instead of the comma operator
-      return `<option value="${escapeHtml(subjNo)}">${escapeHtml(
-        subjNo
-      )} - ${escapeHtml(desc)}</option>`;
+      // Value goes into input, text between tags shows as a hint in dropdown
+      return `<option value="${escapeHtml(subjNo)}">${
+        (escapeHtml(subjNo), ". ", escapeHtml(desc))
+      }</option>`;
     })
     .join("");
 }
@@ -160,12 +160,13 @@ function renderSpclTable(records) {
       <tr>
         <td>${escapeHtml(row.subj_no)}</td>
         <td>${escapeHtml(row.subj_desc || row.subj_no)}</td>
-        <td>${getGeStatusLabel(row)}</td>
+        <td>${getStatusBadge(row)}</td>
         <td>${escapeHtml(getDisplaySemester(row))}</td>
       </tr>
     `);
   });
 
+  // Find unused SC placeholders (e.g., 'SC 1', 'SC 2')
   const spclPlaceholders = currentPlaceholders
     .filter((p) => String(p.subj_no).startsWith("SC "))
     .sort((a, b) => a.sequence - b.sequence);
@@ -260,12 +261,9 @@ function buildPlannedTermOptions(selectedValue) {
 
 function buildHkTypeOptions() {
   return hkTypes
-    .filter((option) => option !== "")
+    .filter((option) => option !== "") // Remove the empty default option
     .map((option) => {
-      // FIXED: Added inner text to the datalist option for better compatibility
-      return `<option value="${escapeHtml(option)}">${escapeHtml(
-        option
-      )}</option>`;
+      return `<option value="${escapeHtml(option)}"></option>`;
     })
     .join("");
 }
@@ -277,59 +275,11 @@ function normalizeRequirementCode(value) {
     .toUpperCase();
 }
 
-const PASSING_GRADE_VALUES = [
-  "1",
-  "1.00",
-  "1.25",
-  "1.50",
-  "1.5",
-  "1.75",
-  "2",
-  "2.00",
-  "2.25",
-  "2.50",
-  "2.5",
-  "2.75",
-  "3",
-  "3.00",
-  "P",
-  "S",
-];
-
-function getEffectiveGrade(row) {
-  return String(row?.r_grade || row?.grade || "")
-    .trim()
-    .toUpperCase();
-}
-
-function hasPlannedTerm(row) {
-  return String(row?.planned_term || "").trim() !== "";
-}
-
-function isPassingRecord(row) {
-  return PASSING_GRADE_VALUES.includes(getEffectiveGrade(row));
-}
-
-function getStatusBadge(row) {
-  const effectiveGrade = getEffectiveGrade(row);
-
-  if (row.currently_enrolled) {
+function getStatusBadge(record) {
+  if (record.currently_enrolled) {
     return '<span class="badge text-bg-success">Currently Enrolled</span>';
   }
-
-  if (isPassingRecord(row)) {
-    return '<span class="badge text-bg-secondary">Completed</span>';
-  }
-
-  if (!effectiveGrade && hasPlannedTerm(row)) {
-    return '<span class="badge text-bg-info">Saved</span>';
-  }
-
-  return '<span class="badge text-bg-warning">Remaining</span>';
-}
-
-function getGeStatusLabel(row) {
-  return getStatusBadge(row);
+  return '<span class="badge text-bg-secondary">Saved</span>';
 }
 
 function getDisplaySemester(record) {
@@ -341,12 +291,29 @@ function getDisplaySemester(record) {
     const year = Number(record.enrolled_year);
     const termRaw = String(record.term).toUpperCase().trim();
 
-    if (termRaw === "1T") return `1st Tri ${year}-${year + 1}`;
-    if (termRaw === "2T") return `2nd Tri ${year}-${year + 1}`;
-    if (termRaw === "3T") return `3rd Tri ${year}-${year + 1}`;
-    if (termRaw === "S" || termRaw === "M") return `${year} Midyear`;
-    if (termRaw === "1") return `1st ${year}-${year + 1}`;
-    if (termRaw === "2") return `2nd ${year}-${year + 1}`;
+    if (termRaw === "1T") {
+      return `1st Tri ${year}-${year + 1}`;
+    }
+
+    if (termRaw === "2T") {
+      return `2nd Tri ${year}-${year + 1}`;
+    }
+
+    if (termRaw === "3T") {
+      return `3rd Tri ${year}-${year + 1}`;
+    }
+
+    if (termRaw === "S" || termRaw === "M") {
+      return `${year} Midyear`;
+    }
+
+    if (termRaw === "1") {
+      return `1st ${year}-${year + 1}`;
+    }
+
+    if (termRaw === "2") {
+      return `2nd ${year}-${year + 1}`;
+    }
 
     return `${termRaw} ${year}`;
   }
@@ -400,7 +367,7 @@ async function getPassedHkNstpByStudentNo(studentNo) {
 
 async function getPassedGeByStudentNo(studentNo) {
   const { data, error } = await supabaseClient
-    .from("v_ge_status")
+    .from("v_ge_passed_enrolled")
     .select("*")
     .eq("stu_no", studentNo)
     .order("subj_no", { ascending: true });
@@ -431,9 +398,12 @@ function getGeRequirementMatch(subjNo) {
     value.includes(code)
   );
 
-  return electiveMatch || null;
+  if (electiveMatch) return electiveMatch;
+
+  return null;
 }
 
+// Helper functions to map your database numbers to readable text
 function getLevelLabel(level) {
   const map = {
     1: "1st Year",
@@ -462,9 +432,11 @@ function renderSubjects(subjects) {
   $enrolledTbody.empty();
   $curriculumContainer.empty();
 
+  // 1. Separate Enrolled from Remaining
   const enrolledSubjects = subjects.filter((s) => s.currently_enrolled);
   const remainingSubjects = subjects.filter((s) => !s.currently_enrolled);
 
+  // 2. Render Enrolled Table
   if (enrolledSubjects.length === 0) {
     $enrolledTbody.append(`
       <tr><td colspan="3" class="text-center text-muted py-4">No currently enrolled subjects.</td></tr>
@@ -481,6 +453,7 @@ function renderSubjects(subjects) {
     });
   }
 
+  // 3. Group and Render Remaining Subjects
   if (remainingSubjects.length === 0) {
     $curriculumContainer.append(`
       <div class="text-center text-muted py-4 border rounded-3 bg-white">No remaining subjects found. You are all caught up!</div>
@@ -488,28 +461,39 @@ function renderSubjects(subjects) {
     return;
   }
 
+  // Group by Level and Semester
   const grouped = {};
   remainingSubjects.forEach((subject) => {
-    const lvl = subject.level || 99;
+    const lvl = subject.level || 99; // 99 pushes unassigned subjects to the bottom
     const sem = subject.semester || "99";
     const groupKey = `${lvl}-${sem}`;
 
     if (!grouped[groupKey]) {
-      grouped[groupKey] = { level: lvl, semester: sem, subjects: [] };
+      grouped[groupKey] = {
+        level: lvl,
+        semester: sem,
+        subjects: [],
+      };
     }
     grouped[groupKey].subjects.push(subject);
   });
 
+  // Sort the groups (First by Level, then by Semester)
   const sortedGroups = Object.values(grouped).sort((a, b) => {
     if (a.level !== b.level) return a.level - b.level;
+
+    // Sort semester: 1st Sem -> 2nd Sem -> Midyear(0)
     const semOrder = { 1: 1, 2: 2, 0: 3 };
     const aSem = semOrder[a.semester] || 99;
     const bSem = semOrder[b.semester] || 99;
     return aSem - bSem;
   });
 
+  // Render each group as its own mini-table
   sortedGroups.forEach((group) => {
+    // Sort subjects within the group by their sequence
     group.subjects.sort((a, b) => (a.sequence || 99) - (b.sequence || 99));
+
     const groupTitle = `${getLevelLabel(group.level)} — ${getSemesterLabel(
       group.semester
     )}`;
@@ -592,12 +576,11 @@ function renderHkNstpTable(records) {
     existingRows.forEach((row) => {
       hasRows = true;
       $tbody.append(`
-        <tr>
-          <td>${escapeHtml(req.code)}</td>
-          <td>${escapeHtml(row.subj_desc || row.subj_no)}</td>
-          <td>${getStatusBadge(row)}</td>
-          <td>${escapeHtml(getDisplaySemester(row))}</td>
-        </tr>
+        <tr><td>${escapeHtml(req.code)}</td><td>${escapeHtml(
+        row.subj_desc || row.subj_no
+      )}</td><td>${getStatusBadge(row)}</td><td>${escapeHtml(
+        getDisplaySemester(row)
+      )}</td></tr>
       `);
     });
 
@@ -608,14 +591,14 @@ function renderHkNstpTable(records) {
 
     for (let i = 0; i < missingCount; i++) {
       const ph = reqPlaceholders[i];
+      if (!ph) continue;
       hasRows = true;
-
-      // FIXED: Added optional chaining to ph?.id to prevent crash if ph is undefined
       $tbody.append(`
-        <tr class="table-light hk-nstp-missing-row" 
-            data-id="${ph?.id || ""}" 
-            data-requirement="${escapeHtml(req.code)}" 
-            data-needs-type="${req.needsType ? "1" : "0"}">
+        <tr class="table-light hk-nstp-missing-row" data-id="${
+          ph.id
+        }" data-requirement="${escapeHtml(req.code)}" data-needs-type="${
+        req.needsType ? "1" : "0"
+      }">
           <td>${escapeHtml(req.code)}</td>
           <td>
             ${
@@ -625,150 +608,108 @@ function renderHkNstpTable(records) {
             }
           </td>
           <td>Remaining</td>
-          <td>
-            <select class="form-select form-select-sm hk-semester-input">
-              ${buildPlannedTermOptions("")}
-            </select>
-          </td>
+          <td><select class="form-select form-select-sm hk-semester-input">${buildPlannedTermOptions(
+            ""
+          )}</select></td>
         </tr>
       `);
     }
   });
 
-  if (!hasRows) {
+  if (!hasRows)
     $tbody.append(
       `<tr><td colspan="4" class="text-center text-muted py-4">No HK/NSTP records found.</td></tr>`
     );
-  }
 }
 
 function renderGeTable(records) {
   const $tbody = $("#ge-table tbody");
   $tbody.empty();
 
-  let hasRows = false;
-
-  function findBestRequiredGeRow(req) {
-    const matches = records.filter(
+  const groupedRequired = {};
+  REQUIRED_GE_REQUIREMENTS.forEach((req) => {
+    groupedRequired[req.code] = records.filter(
       (row) => getGeRequirementMatch(row.subj_no) === req.code
     );
-
-    if (!matches.length) return null;
-
-    return (
-      matches.find((row) => row.currently_enrolled) ||
-      matches.find((row) => isPassingRecord(row)) ||
-      matches.find((row) => hasPlannedTerm(row)) ||
-      matches[0]
-    );
-  }
-
-  REQUIRED_GE_REQUIREMENTS.forEach((req) => {
-    const row = findBestRequiredGeRow(req);
-
-    if (row) {
-      hasRows = true;
-      $tbody.append(`
-        <tr class="${
-          !row.currently_enrolled &&
-          !isPassingRecord(row) &&
-          !hasPlannedTerm(row)
-            ? "ge-missing-row table-light"
-            : ""
-        }"
-        data-ge-type="required"
-        data-id="${row.id || ""}"
-        data-subj="${escapeHtml(req.code)}">
-          <td>Required GE</td>
-          <td>${escapeHtml(req.code)}</td>
-          <td>${escapeHtml(row.subj_desc || row.subj_no || req.code)}</td>
-          <td>${getGeStatusLabel(row)}</td>
-          <td>
-            ${
-              row.currently_enrolled ||
-              isPassingRecord(row) ||
-              hasPlannedTerm(row)
-                ? escapeHtml(getDisplaySemester(row))
-                : `<select class="form-select form-select-sm ge-semester-input">
-                    ${buildPlannedTermOptions("")}
-                   </select>`
-            }
-          </td>
-        </tr>
-      `);
-      return;
-    }
-
-    hasRows = true;
-
-    $tbody.append(`
-      <tr class="table-light ge-missing-row"
-          data-ge-type="required"
-          data-subj="${escapeHtml(req.code)}">
-        <td>Required GE</td>
-        <td>${escapeHtml(req.code)}</td>
-        <td><span class="text-muted">To be completed</span></td>
-        <td><span class="badge text-bg-warning">Remaining</span></td>
-        <td>
-          <select class="form-select form-select-sm ge-semester-input">
-            ${buildPlannedTermOptions("")}
-          </select>
-        </td>
-      </tr>
-    `);
   });
 
   const electiveRows = records.filter((row) =>
     ELECTIVE_GE_SUBJECTS.includes(getGeRequirementMatch(row.subj_no))
   );
 
+  let hasRows = false;
+
+  // Render Required GEs
+  REQUIRED_GE_REQUIREMENTS.forEach((req) => {
+    const existingRows = groupedRequired[req.code] || [];
+    existingRows.forEach((row) => {
+      hasRows = true;
+      $tbody.append(`
+        <tr><td>Required GE</td><td>${escapeHtml(
+          req.code
+        )}</td><td>${escapeHtml(
+        row.subj_desc || row.subj_no
+      )}</td><td>${getStatusBadge(row)}</td><td>${escapeHtml(
+        getDisplaySemester(row)
+      )}</td></tr>
+      `);
+    });
+
+    // Find placeholders for this specific Required GE
+    const reqPlaceholders = currentPlaceholders.filter((p) => {
+      if (req.code === "KAS 1 / HIST 1")
+        return p.subj_no === "KAS 1" || p.subj_no === "HIST 1";
+      return p.subj_no === req.code;
+    });
+
+    const missingCount = Math.max(req.required - existingRows.length, 0);
+    for (let i = 0; i < missingCount; i++) {
+      const ph = reqPlaceholders[i];
+      if (!ph) continue;
+      hasRows = true;
+      $tbody.append(`
+        <tr class="table-light ge-missing-row" data-ge-type="required" data-id="${
+          ph.id
+        }" data-subj="${escapeHtml(ph.subj_no)}">
+          <td>Required GE</td>
+          <td>${escapeHtml(ph.subj_no)}</td>
+          <td><span class="text-muted">To be completed</span></td>
+          <td>Remaining</td>
+          <td><select class="form-select form-select-sm ge-semester-input">${buildPlannedTermOptions(
+            ""
+          )}</select></td>
+        </tr>
+      `);
+    }
+  });
+
+  // Render Elective GEs
   electiveRows.forEach((row) => {
     hasRows = true;
-
     $tbody.append(`
-      <tr class="${
-        !row.currently_enrolled && !isPassingRecord(row) && !hasPlannedTerm(row)
-          ? "ge-missing-row table-light"
-          : ""
-      }"
-      data-ge-type="required"
-      data-id="${row.id || ""}"
-      data-subj="${escapeHtml(row.subj_no)}">
-        <td>Elective GE</td>
-        <td>${escapeHtml(
-          getGeRequirementMatch(row.subj_no) || row.subj_no
-        )}</td>
-        <td>${escapeHtml(row.subj_desc || row.subj_no)}</td>
-        <td>${getGeStatusLabel(row)}</td>
-        <td>
-          ${
-            row.currently_enrolled ||
-            isPassingRecord(row) ||
-            hasPlannedTerm(row)
-              ? escapeHtml(getDisplaySemester(row))
-              : `<select class="form-select form-select-sm ge-semester-input">
-                  ${buildPlannedTermOptions("")}
-                 </select>`
-          }
-        </td>
-      </tr>
+      <tr><td>Elective GE</td><td>${escapeHtml(
+        getGeRequirementMatch(row.subj_no) || row.subj_no
+      )}</td><td>${escapeHtml(
+      row.subj_desc || row.subj_no
+    )}</td><td>${getStatusBadge(row)}</td><td>${escapeHtml(
+      getDisplaySemester(row)
+    )}</td></tr>
     `);
   });
 
+  const electivePlaceholders = currentPlaceholders.filter(
+    (p) => p.subj_no === "GE" || p.category_label === "GE Elective"
+  );
   const missingElectives = Math.max(3 - electiveRows.length, 0);
 
   for (let i = 0; i < missingElectives; i++) {
-    const electivePlaceholders = currentPlaceholders.filter(
-      (p) => p.subj_no === "GE" || p.category_label === "GE Elective"
-    );
-
     const ph = electivePlaceholders[i];
+    if (!ph) continue;
     hasRows = true;
-
     $tbody.append(`
-      <tr class="table-light ge-missing-row"
-          data-ge-type="elective"
-          data-id="${ph?.id || ""}">
+      <tr class="table-light ge-missing-row" data-ge-type="elective" data-id="${
+        ph.id
+      }">
         <td>Elective GE</td>
         <td>
           <select class="form-select form-select-sm ge-elective-input">
@@ -782,25 +723,18 @@ function renderGeTable(records) {
           </select>
         </td>
         <td><span class="text-muted">To be completed</span></td>
-        <td><span class="badge text-bg-warning">Remaining</span></td>
-        <td>
-          <select class="form-select form-select-sm ge-semester-input">
-            ${buildPlannedTermOptions("")}
-          </select>
-        </td>
+        <td>Remaining</td>
+        <td><select class="form-select form-select-sm ge-semester-input">${buildPlannedTermOptions(
+          ""
+        )}</select></td>
       </tr>
     `);
   }
 
-  if (!hasRows) {
-    $tbody.append(`
-      <tr>
-        <td colspan="5" class="text-center text-muted py-4">
-          No GE records found.
-        </td>
-      </tr>
-    `);
-  }
+  if (!hasRows)
+    $tbody.append(
+      `<tr><td colspan="5" class="text-center text-muted py-4">No GE records found.</td></tr>`
+    );
 }
 
 function showPortalMessage(type, message) {
@@ -811,6 +745,7 @@ function showPortalMessage(type, message) {
     .text(message);
 }
 
+// NEW: Fetch unused placeholders for the UI binding
 async function getUnusedPlaceholders(studentNo) {
   const { data, error } = await supabaseClient
     .from("subjects_status")
@@ -839,7 +774,8 @@ async function loadStudentPortal(email) {
 
   try {
     const student = await getStudentByEmail(email);
-    const studentDegree = student ? normalizeDegree(student.degree) : "";
+    console.log("student info: ", student);
+    const studentDegree = normalizeDegree(student.degree);
 
     if (shouldShowGeSection(studentDegree)) {
       $("#ge-section").show();
@@ -884,6 +820,7 @@ async function loadStudentPortal(email) {
     currentPassedGe = passedGe;
     currentPassedSpcl = passedSpcl;
 
+    // <--- NEW: Fetch placeholders before rendering tables
     currentPlaceholders = await getUnusedPlaceholders(student.student_no);
 
     renderSubjects(remainingSubjects);
@@ -896,7 +833,6 @@ async function loadStudentPortal(email) {
     if (shouldShowSpclSection(studentDegree)) {
       renderSpclTable(passedSpcl);
     }
-
     $("#loading-section").addClass("d-none");
     $("#portal-section").removeClass("d-none");
   } catch (error) {
@@ -915,23 +851,28 @@ async function savePlannedTerms() {
 
   const updates = [];
 
+  // 1a. Gather Remaining Subjects updates (Top Table - Updates existing IDs)
   $("#subjects-table tbody tr[data-id]").each(function () {
     const $select = $(this).find(".planned-term");
     if (!$select.prop("disabled") && $select.val()) {
       updates.push(
         supabaseClient
           .from("subjects_status")
-          .update({ planned_term: $select.val() })
+          .update({
+            planned_term: $select.val(),
+          })
           .eq("id", Number($(this).attr("data-id")))
       );
     }
   });
 
+  // 1b. SPCL Updates (Updating the placeholder row)
   $(".spcl-missing-row").each(function () {
     const id = $(this).data("id");
     const subjectCode = $(this).find(".spcl-subject-input").val().trim();
     const term = $(this).find(".spcl-semester-input").val();
 
+    // Only update if they selected both a subject and a term
     if (id && subjectCode && term) {
       const courseData = spclSubjectsData.find(
         (course) => course["Subject No"] === subjectCode
@@ -962,6 +903,7 @@ async function savePlannedTerms() {
     }
   });
 
+  // 1c. GE Updates (Updating the placeholder row)
   $(".ge-missing-row").each(function () {
     const id = $(this).data("id");
     const type = $(this).data("ge-type");
@@ -985,6 +927,7 @@ async function savePlannedTerms() {
     }
   });
 
+  // 1d. Gather HK/NSTP Updates (Updating the placeholder row)
   $(".hk-nstp-missing-row").each(function () {
     const id = $(this).data("id");
     const requirement = $(this).data("requirement");
@@ -993,12 +936,16 @@ async function savePlannedTerms() {
     const term = $(this).find(".hk-semester-input").val();
 
     if (id && term && (!needsType || (needsType && hkType))) {
+      // Base data to update
       const updateData = {
         subj_no: requirement,
         planned_term: term,
       };
 
-      if (hkType) updateData.subj_desc = hkType;
+      // Only overwrite the description if they picked a specific HK activity
+      if (hkType) {
+        updateData.subj_desc = hkType;
+      }
 
       updates.push(
         supabaseClient.from("subjects_status").update(updateData).eq("id", id)
@@ -1006,6 +953,7 @@ async function savePlannedTerms() {
     }
   });
 
+  // 2. Gather student concerns (safely handling optional input)
   const $concernsInput = $("#student-concerns");
   const studentConcerns = $concernsInput.length
     ? ($concernsInput.val() || "").trim()
@@ -1021,7 +969,10 @@ async function savePlannedTerms() {
     );
   }
 
+  console.log("Total items ready to save:", updates.length);
+
   if (updates.length === 0) {
+    // Hide modal if nothing to save so they can see the warning on the main page
     const modalEl = document.getElementById("confirmSaveModal");
     if (modalEl) bootstrap.Modal.getInstance(modalEl).hide();
 
@@ -1032,10 +983,14 @@ async function savePlannedTerms() {
     return;
   }
 
+  // --- NEW: MODAL "SAVING" STATE ---
   const $modalBody = $("#confirmSaveModal .modal-body");
   const $modalFooter = $("#confirmSaveModal .modal-footer");
 
+  // Hide the footer buttons so the user can't click anything else
   $modalFooter.hide();
+
+  // Show a saving spinner inside the modal
   $modalBody.html(`
     <div class="text-center py-4">
       <div class="spinner-border text-dark mb-3" role="status"></div>
@@ -1048,8 +1003,11 @@ async function savePlannedTerms() {
     const results = await Promise.all(updates);
     const failed = results.find((result) => result.error);
 
-    if (failed) throw failed.error;
+    if (failed) {
+      throw failed.error; // Send to catch block
+    }
 
+    // --- SUCCESS & MODAL COUNTDOWN LOGIC ---
     let secondsLeft = 5;
     $modalBody.html(`
       <div class="text-center py-4">
@@ -1059,16 +1017,20 @@ async function savePlannedTerms() {
       </div>
     `);
 
+    // Clear the concerns box safely in the background
+    const $concernsInput = $("#student-concerns");
     if ($concernsInput.length) {
       $concernsInput.val("");
     }
 
+    // Start countdown
     const timerInterval = setInterval(() => {
       secondsLeft--;
       $("#logout-timer").text(secondsLeft);
       if (secondsLeft <= 0) {
         clearInterval(timerInterval);
 
+        // Hide modal backdrop properly before redirecting
         const modalEl = document.getElementById("confirmSaveModal");
         if (modalEl) bootstrap.Modal.getInstance(modalEl).hide();
 
@@ -1078,6 +1040,7 @@ async function savePlannedTerms() {
   } catch (error) {
     console.error("Save JS error:", error);
 
+    // Revert modal to error state and show footer again so they can close it
     $modalBody.html(`
       <div class="py-4 text-center">
         <h5 class="fw-bold text-danger">Error Saving Data</h5>
@@ -1097,12 +1060,13 @@ function logoutUser() {
   currentSubjects = [];
   currentPassedHkNstp = [];
   currentPassedGe = [];
-  currentPassedSpcl = []; // FIXED: Moved this above redirect
   sessionStorage.removeItem("student_portal_user");
   window.location.href = "index.html";
+  currentPassedSpcl = [];
 }
 
 $(document).ready(async function () {
+  // Load SPCL JSON before initializing portal
   await loadSpclCourses();
   await loadHKActivities();
 
@@ -1123,6 +1087,7 @@ $(document).ready(async function () {
       logoutUser();
     });
 
+    // Change this to open the modal instead of saving directly
     $("#save-plan-btn").on("click", function () {
       const confirmModal = new bootstrap.Modal(
         document.getElementById("confirmSaveModal")
@@ -1130,7 +1095,14 @@ $(document).ready(async function () {
       confirmModal.show();
     });
 
+    // Add this to do the actual saving when "Yes, Submit" is clicked
     $("#confirm-save-btn").on("click", async function () {
+      // Hide the modal
+      // const modalEl = document.getElementById("confirmSaveModal");
+      // const modalInstance = bootstrap.Modal.getInstance(modalEl);
+      // modalInstance.hide();
+
+      // Run the save function
       await savePlannedTerms();
     });
   }
@@ -1143,18 +1115,22 @@ $(document).ready(async function () {
     }
   }
 
+  // Auto-fill SPCL Description when a subject is selected
   $(document).on("input", ".spcl-subject-input", function () {
     const selectedSubjNo = $(this).val().trim();
     const $row = $(this).closest("tr");
     const $descCell = $row.find(".spcl-description-cell");
 
+    // Find the matching subject from the JSON data we loaded earlier
     const matchedSubject = spclSubjectsData.find(
       (course) => course["Subject No"] === selectedSubjNo
     );
 
     if (matchedSubject && matchedSubject["Description"]) {
+      // Show the actual description
       $descCell.text(matchedSubject["Description"]);
     } else {
+      // Revert to default if input is cleared or invalid
       $descCell.html('<span class="text-muted">To be completed</span>');
     }
   });
